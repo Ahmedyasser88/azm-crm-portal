@@ -9,10 +9,17 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import type { CurrentUser } from "@/lib/types/identity";
+import { logout } from "@/app/login/actions";
 
-export default function Header({ onToggle }: { onToggle: () => void }) {
-  // TODO: replace with the signed-in user's data once auth/identity is wired up.
-  const userDisplayName = "مستخدم أزم";
+export default function Header({
+  onToggle,
+  user,
+}: {
+  onToggle: () => void;
+  user: CurrentUser | null;
+}) {
+  const userDisplayName = user?.fullName || user?.username || "مستخدم أزم";
 
   return (
     <header className="bg-white h-16 flex items-center justify-between px-4 lg:px-16 sticky top-0 z-30 shadow-sm">
@@ -46,7 +53,7 @@ export default function Header({ onToggle }: { onToggle: () => void }) {
             <UserIcon />
             الملف الشخصي
           </DropdownMenuItem>
-          <DropdownMenuItem variant="destructive">
+          <DropdownMenuItem variant="destructive" onClick={() => logout()}>
             <LogOut />
             تسجيل الخروج
           </DropdownMenuItem>

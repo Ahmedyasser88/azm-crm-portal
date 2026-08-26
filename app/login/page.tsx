@@ -1,28 +1,29 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { login } from "./actions";
 
-// TODO: replace this stub with a real call to the azm-crm-backend auth endpoint
-// (e.g. POST /api/Identity/login) once it exists. On success the backend should
-// set the AUTH_TOKEN_COOKIE ("azm_crm_auth_token") and this page should redirect
-// to the "redirect" query param (or /dashboard).
 export default function LoginPage() {
-  const router = useRouter();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    setError(null);
     setIsSubmitting(true);
 
-    // TODO: call the real login API route here instead of this placeholder.
-    console.warn("TODO: wire up authentication", { username, password });
+    const redirectTo = new URLSearchParams(window.location.search).get("redirect") || "/dashboard";
 
+    // login() redirects on success (which throws NEXT_REDIRECT and unwinds
+    // out of this function) — a returned value only ever means failure.
+    const result = await login(username, password, redirectTo);
+
+    if (result && !result.success) {
+      setError(result.error);
+    }
     setIsSubmitting(false);
-    const redirect = new URLSearchParams(window.location.search).get("redirect") || "/dashboard";
-    router.push(redirect);
   }
 
   return (
@@ -39,7 +40,7 @@ export default function LoginPage() {
         <div className="space-y-4">
           <div className="space-y-1.5">
             <label htmlFor="username" className="text-sm font-medium text-text-default">
-              اسم المستخدم
+              اسم المستخدم أو البريد الإلكتروني
             </label>
             <input
               id="username"
@@ -68,6 +69,12 @@ export default function LoginPage() {
             />
           </div>
         </div>
+
+        {error && (
+          <p role="alert" className="text-sm text-red-600 text-center">
+            {error}
+          </p>
+        )}
 
         <button type="submit" className="btn-primary w-full justify-center" disabled={isSubmitting}>
           {isSubmitting ? "جارٍ الدخول..." : "تسجيل الدخول"}

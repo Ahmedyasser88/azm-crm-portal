@@ -5,8 +5,15 @@ import Header from "@/components/layout/Header";
 import { clsx } from "clsx";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { sidebarCollapsedAtom } from "@/app/atoms";
+import type { CurrentUser } from "@/lib/types/identity";
 
-export default function AppLayout({ children }: { children: React.ReactNode }) {
+export default function AppLayout({
+  children,
+  user,
+}: {
+  children: React.ReactNode;
+  user: CurrentUser | null;
+}) {
   const [collapsed, setCollapsed] = useAtom(sidebarCollapsedAtom);
 
   return (
@@ -24,7 +31,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           collapsed ? "md:ms-20" : "md:ms-64"
         )}
       >
-        <Header onToggle={() => setCollapsed(!collapsed)} />
+        <Header onToggle={() => setCollapsed(!collapsed)} user={user} />
         <main className="p-4 lg:py-6 lg:px-16">
           <Breadcrumb />
           {children}
