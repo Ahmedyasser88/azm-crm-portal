@@ -1,0 +1,1 @@
+export { sidebarCollapsedAtom } from "./sidebarAtom";
