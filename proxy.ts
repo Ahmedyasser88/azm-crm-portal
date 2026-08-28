@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { AUTH_TOKEN_COOKIE } from "@/lib/constants/auth";
 
-const PUBLIC_PATHS = ["/login"];
+const PUBLIC_PATHS = ["/login", "/widget"];
 
 export function proxy(request: NextRequest) {
   const token = request.cookies.get(AUTH_TOKEN_COOKIE)?.value;

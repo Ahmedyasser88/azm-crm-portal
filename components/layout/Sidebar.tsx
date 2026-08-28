@@ -6,6 +6,8 @@ import { clsx } from "clsx";
 import {
   LayoutDashboard,
   Users,
+  Ticket,
+  MessageCircle,
   Handshake,
   BarChart3,
   type LucideIcon,
@@ -15,6 +17,8 @@ import { navItems } from "@/lib/constants/sidebar";
 const ICONS: Record<string, LucideIcon> = {
   "layout-dashboard": LayoutDashboard,
   users: Users,
+  ticket: Ticket,
+  "message-circle": MessageCircle,
   handshake: Handshake,
   "bar-chart-3": BarChart3,
 };
