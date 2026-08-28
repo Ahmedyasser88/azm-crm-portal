@@ -4,8 +4,30 @@ import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { TICKET_HISTORY_EVENT_LABELS } from "@/lib/constants/ticketHistory";
+import { TICKET_CATEGORY_LABELS, TICKET_PRIORITY_LABELS, TICKET_STATUS_LABELS } from "@/lib/constants/ticket";
 import { formatDateTime } from "@/lib/utils/date";
 import type { TicketHistoryEntry } from "@/lib/types/ticketHistory";
+import type { TicketCategory, TicketPriority, TicketStatus } from "@/lib/types/ticket";
+
+// The backend logs Title/Category/Priority changes under the same "Updated"
+// eventType, distinguished only by `description` text ("Title changed.",
+// "Category changed.", "Priority changed." — see UpdateTicketCommandHandler
+// in azm-crm-backend). Status changes get their own "StatusChanged" eventType.
+// oldValue/newValue for Title changes are free text and pass through
+// untouched; for the other three they're raw backend enum names (e.g.
+// "InProgress") that read better mapped to their Arabic labels.
+function formatHistoryValue(entry: TicketHistoryEntry, value: string): string {
+  if (entry.description === "Category changed." && value in TICKET_CATEGORY_LABELS) {
+    return TICKET_CATEGORY_LABELS[value as TicketCategory];
+  }
+  if (entry.description === "Priority changed." && value in TICKET_PRIORITY_LABELS) {
+    return TICKET_PRIORITY_LABELS[value as TicketPriority];
+  }
+  if (entry.eventType === "StatusChanged" && value in TICKET_STATUS_LABELS) {
+    return TICKET_STATUS_LABELS[value as TicketStatus];
+  }
+  return value;
+}
 
 export type TicketHistorySectionProps = {
   ticketId: string;
@@ -48,7 +70,7 @@ export function TicketHistorySection({
                   <p className="text-sm text-text-default">{entry.description}</p>
                   {entry.oldValue && entry.newValue && (
                     <p className="text-xs text-text-secondary">
-                      {entry.oldValue} ← {entry.newValue}
+                      {formatHistoryValue(entry, entry.oldValue)} ← {formatHistoryValue(entry, entry.newValue)}
                     </p>
                   )}
                 </div>
