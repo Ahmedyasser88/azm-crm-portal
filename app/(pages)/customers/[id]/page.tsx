@@ -72,6 +72,12 @@ export default async function CustomerDetailPage({ params, searchParams }: Custo
             <Link href={`/tickets/new?customerId=${id}`}>
               <Button variant="outline">فتح تذكرة</Button>
             </Link>
+            <Link href={`/conversations?customerId=${id}`}>
+              <Button variant="outline">عرض المحادثات</Button>
+            </Link>
+            <Link href={`/conversations/new?customerId=${id}`}>
+              <Button variant="outline">محادثة جديدة</Button>
+            </Link>
             <Link href={`/customers/${id}/edit`}>
               <Button variant="outline">تعديل</Button>
             </Link>

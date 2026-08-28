@@ -40,19 +40,20 @@ Outcomes:
 4. [app/(pages)/tickets/actions.ts](app/(pages)/tickets/actions.ts) lines 1–34 (`createTicketAction`) — the exact `"use server"` mutation shape (`apiServerFetch` → check `!result.success` → `revalidatePath` → `redirect`) this story's `createConversationAction` mirrors.
 5. [lib/api/ticket.api.ts](lib/api/ticket.api.ts) — full file (45 lines). The `ticketEndpoints` shape (`list`/`getById`/nested `history.list`) this story's `conversationEndpoints` mirrors, with a nested `messages.list` in place of `history.list`.
 6. [lib/types/ticket.ts](lib/types/ticket.ts) and [lib/types/ticketHistory.ts](lib/types/ticketHistory.ts) — full files. The `Ticket`/`TicketListItem`/`TicketHistoryEntry` type shapes this story's `lib/types/conversation.ts`/`lib/types/message.ts` mirror.
-7. [app/(pages)/tickets/[id]/page.tsx](app/(pages)/tickets/[id]/page.tsx) — read in full (107 lines). Lines 23–28 (`getById` + `notFound()`/error-throw pattern), lines 32–33 (degrade-to-raw-id customer lookup), lines 40–42 (`<div className="space-y-6">` wrapper + `SetBreadcrumbLabel`) are the exact structure `app/(pages)/conversations/[id]/page.tsx` (Task 8) follows. Story 09 ([09-story-live-chat-KAN-3.md](09-story-live-chat-KAN-3.md)) later edits the bottom of this story's version of this file to swap in a real-time panel for `LiveChat` conversations — leave that composition point easy to find (see Task 8).
-8. [app/(pages)/tickets/page.tsx](app/(pages)/tickets/page.tsx) — read in full (165 lines). Lines 49–60 (`buildPageHref`), lines 82–139 (empty-state + table), lines 141–162 (prev/next pagination) are the exact list-page shape `app/(pages)/conversations/page.tsx` (Task 8) follows, minus the `search` filter (not supported by the backend list endpoint — see Prerequisites) and the assignment/escalation columns (tickets-only concepts).
-9. [components/tickets/TicketFilters.tsx](components/tickets/TicketFilters.tsx) — read in full (137 lines). Lines 50–61 (`updateParam`, URL-param write pattern) is what `ConversationFilters` (Task 6) reuses for its channel/status selects; this story's filters component has **no search `<input>`/debounce logic** (lines 28–48 of this file), since there is nothing to debounce without a `search` param.
-10. [components/tickets/TicketHistorySection.tsx](components/tickets/TicketHistorySection.tsx) — read in full (88 lines). The pagination-link pattern (lines 24–31, `buildHref` via `usePathname`/`useSearchParams`) this story's `MessageThread` (Task 7) reuses for its (rarely-reached) `messagesPage` pagination — but unlike this read-only history section, `MessageThread` also composes with a reply form below it (Task 7).
-11. [app/(pages)/customers/[id]/page.tsx](app/(pages)/customers/[id]/page.tsx) lines 68–79 — the current action-button row (`<div className="flex gap-2">` at line 68 through its closing `</div>` at line 79), holding, in order, the "عرض التذاكر"/"فتح تذكرة" ticket cross-links, then "تعديل", then `DeleteCustomerButton`. This story (Task 9) inserts two more links into this same row.
-12. [lib/constants/sidebar.ts](lib/constants/sidebar.ts) — full file (13 lines). `navItems` currently has `dashboard`, `customers`, `tickets`, `deals`, `reports` (lines 8–12) — this story inserts a `conversations` entry after `tickets` (line 10).
-13. [components/layout/Sidebar.tsx](components/layout/Sidebar.tsx) — full file (76 lines). The `ICONS` record (lines 16–22) maps a `navItems[].icon` string to a `lucide-react` component; this story adds a `"message-circle"` → `MessageCircle` mapping, importing `MessageCircle` alongside the existing `lucide-react` imports (lines 6–13).
-14. [components/ui/Breadcrumb.tsx](components/ui/Breadcrumb.tsx) — its `labels` map is auto-generated from `navItems`, so the new `conversations` nav entry (Task 9) automatically gives `/conversations` a correct Arabic breadcrumb label with **no changes needed to this file**; its `actionLabels` map already covers `/conversations/new` for the same reason (`new` is already a recognized action segment).
-15. [components/customers/SetBreadcrumbLabel.tsx](components/customers/SetBreadcrumbLabel.tsx) — full file (28 lines), a generic, entity-agnostic component reused as-is (imported from its existing path) for conversation ids — do not duplicate it under `components/conversations/`.
-16. [components/customers/CustomerForm.tsx](components/customers/CustomerForm.tsx) — the `useState`/`role="alert"` error paragraph/`disabled={isSubmitting}` form convention `ConversationForm` (Task 5) and `SendMessageForm` (Task 7) both follow.
-17. [lib/types/pagination.ts](lib/types/pagination.ts) — full file (9 lines). `PaginatedResult<T>` — note the `totalPages` field, referenced in Edge Cases when discussing why this story does not attempt a "jump to the last page of messages" feature.
-18. [lib/utils/date.ts](lib/utils/date.ts) — `formatDateTime`, reused for every conversation/message timestamp.
-19. [lib/api/customer.api.ts](lib/api/customer.api.ts) — `customerEndpoints.list`/`getById`, used the same way the ticket module uses them (customer-name resolution for the detail page, cross-link hrefs).
+7. [app/(pages)/tickets/[id]/page.tsx](app/(pages)/tickets/[id]/page.tsx) — read in full (107 lines). Lines 23–28 (`getById` + `notFound()`/error-throw pattern), lines 32–33 (degrade-to-raw-id customer lookup), lines 40–42 (`<div className="space-y-6">` wrapper + `SetBreadcrumbLabel`) are the exact structure `app/(pages)/conversations/[id]/page.tsx` (Task 7) follows. Story 09 ([09-story-live-chat-KAN-3.md](09-story-live-chat-KAN-3.md)) later edits the bottom of this story's version of this file to swap in a real-time panel for `LiveChat` conversations — leave that composition point easy to find (see Task 7).
+8. [app/(pages)/tickets/page.tsx](app/(pages)/tickets/page.tsx) — read in full (165 lines). Lines 49–60 (`buildPageHref`), lines 82–139 (empty-state + table), lines 141–162 (prev/next pagination) are the exact list-page shape `app/(pages)/conversations/page.tsx` (Task 7) follows, minus the `search` filter (not supported by the backend list endpoint — see Prerequisites) and the assignment/escalation columns (tickets-only concepts).
+9. [components/tickets/TicketFilters.tsx](components/tickets/TicketFilters.tsx) — read in full (137 lines). Lines 50–61 (`updateParam`, URL-param write pattern) is what `ConversationFilters` (Task 4) reuses for its channel/status selects; this story's filters component has **no search `<input>`/debounce logic** (lines 28–48 of this file), since there is nothing to debounce without a `search` param.
+10. [components/tickets/TicketHistorySection.tsx](components/tickets/TicketHistorySection.tsx) — read in full (88 lines). The pagination-link pattern (lines 24–31, `buildHref` via `usePathname`/`useSearchParams`) this story's `MessageThread` (Task 6) reuses for its (rarely-reached) `messagesPage` pagination — but unlike this read-only history section, `MessageThread` also composes with a reply form below it (Task 6).
+11. [app/(pages)/tickets/actions.ts](app/(pages)/tickets/actions.ts) lines 60–77 (`assignTicketAction`) — the "mutate and stay on the current page" shape (`apiServerFetch` → check `!result.success` → `revalidatePath` → `return { success: true }`, **no `redirect()`**) this story's `sendMessageAction` (Task 3) follows, since replying to a conversation stays on the same detail page — unlike `createTicketAction`/`createConversationAction`, which navigate to a newly created entity's own page.
+12. [app/(pages)/customers/[id]/page.tsx](app/(pages)/customers/[id]/page.tsx) lines 68–79 — the current action-button row (`<div className="flex gap-2">` at line 68 through its closing `</div>` at line 79), holding, in order, the "عرض التذاكر"/"فتح تذكرة" ticket cross-links, then "تعديل", then `DeleteCustomerButton`. This story (Task 9) inserts two more links into this same row.
+13. [lib/constants/sidebar.ts](lib/constants/sidebar.ts) — full file (13 lines). `navItems` currently has `dashboard`, `customers`, `tickets`, `deals`, `reports` (lines 8–12) — this story inserts a `conversations` entry after `tickets` (line 10).
+14. [components/layout/Sidebar.tsx](components/layout/Sidebar.tsx) — full file (76 lines). The `ICONS` record (lines 16–22) maps a `navItems[].icon` string to a `lucide-react` component; this story adds a `"message-circle"` → `MessageCircle` mapping, importing `MessageCircle` alongside the existing `lucide-react` imports (lines 6–13).
+15. [components/ui/Breadcrumb.tsx](components/ui/Breadcrumb.tsx) — its `labels` map is auto-generated from `navItems`, so the new `conversations` nav entry (Task 8) automatically gives `/conversations` a correct Arabic breadcrumb label with **no changes needed to this file**; its `actionLabels` map already covers `/conversations/new` for the same reason (`new` is already a recognized action segment).
+16. [components/customers/SetBreadcrumbLabel.tsx](components/customers/SetBreadcrumbLabel.tsx) — full file (28 lines), a generic, entity-agnostic component reused as-is (imported from its existing path) for conversation ids — do not duplicate it under `components/conversations/`.
+17. [components/customers/CustomerForm.tsx](components/customers/CustomerForm.tsx) — the `useState`/`role="alert"` error paragraph/`disabled={isSubmitting}` form convention `ConversationForm` (Task 5) and `SendMessageForm` (Task 6) both follow.
+18. [lib/types/pagination.ts](lib/types/pagination.ts) — full file (9 lines). `PaginatedResult<T>` — note the `totalPages` field, referenced in Edge Cases when discussing why this story does not attempt a "jump to the last page of messages" feature.
+19. [lib/utils/date.ts](lib/utils/date.ts) — `formatDateTime`, reused for every conversation/message timestamp.
+20. [lib/api/customer.api.ts](lib/api/customer.api.ts) — `customerEndpoints.list`/`getById`, used the same way the ticket module uses them (customer-name resolution for the detail page, cross-link hrefs).
 
 ## Implementation tasks
 
@@ -209,7 +210,7 @@ export async function createConversationAction(
 export async function sendMessageAction(
   conversationId: string,
   body: string
-): Promise<ConversationActionResult | undefined> {
+): Promise<ConversationActionResult> {
   const result = await apiServerFetch<string>({
     url: `/api/conversations/${conversationId}/messages`,
     method: "POST",
@@ -220,11 +221,13 @@ export async function sendMessageAction(
     return { success: false, error: result.error };
   }
 
+  // No redirect — this is a "mutate and stay on the current page" action, the same
+  // shape as assignTicketAction/changeTicketStatusAction/escalateTicketAction (Context
+  // item 11), not a "create/update and navigate elsewhere" one like createConversationAction
+  // above. revalidatePath alone causes Next.js to re-render this route's Server Components
+  // with the new message included once the action returns.
   revalidatePath(`/conversations/${conversationId}`);
-  // Redirects back to the same conversation with no `messagesPage` query param — resets
-  // to the default (pageSize: 100) view, which shows the whole thread for the common case.
-  // See Edge Cases for the rare, long-thread exception.
-  redirect(`/conversations/${conversationId}`);
+  return { success: true };
 }
 ```
 
@@ -284,11 +287,11 @@ Renders a `.card` containing:
 
 ```ts
 export type SendMessageFormProps = {
-  onSubmit: (body: string) => Promise<ConversationActionResult | undefined>;
+  onSubmit: (body: string) => Promise<ConversationActionResult>;
 };
 ```
 
-On submit: if `body.trim()` is empty, set a client-side error ("يرجى كتابة رسالة") without calling `onSubmit`. Otherwise call `onSubmit(body)`; a `success`/`undefined` result means the caller already redirected (see Task 3's `sendMessageAction`); on `{ success: false, error }` show it via the shared error paragraph and keep the typed text so the agent doesn't lose it.
+On submit: if `body.trim()` is empty, set a client-side error ("يرجى كتابة رسالة") without calling `onSubmit`. Otherwise call `onSubmit(body)` (unlike `TicketForm`'s `onSubmit`, this one never redirects — see Task 3's `sendMessageAction`, which only `revalidatePath`s); on `{ success: true }`, clear the textarea (the page re-renders with the new message already included via the revalidated data — no local mirroring of the sent message is needed); on `{ success: false, error }` show it via the shared error paragraph and keep the typed text so the agent doesn't lose it.
 
 ### 7 — Pages
 

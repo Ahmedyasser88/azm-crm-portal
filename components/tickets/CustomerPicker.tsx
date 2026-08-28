@@ -14,8 +14,17 @@ export function CustomerPicker({ value, onSelect, initialLabel }: CustomerPicker
   const [results, setResults] = useState<CustomerSearchResult[]>([]);
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  // Skip the very first search-and-open pass: when arriving with a known `initialLabel`,
+  // `query` already equals it on mount, and this effect firing anyway would immediately
+  // re-open the dropdown with the already-selected customer as a clickable result.
+  const isInitialMount = useRef(true);
 
   useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+
     const timeout = setTimeout(async () => {
       const found = await searchCustomersAction(query);
       setResults(found);
