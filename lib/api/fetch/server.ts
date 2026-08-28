@@ -92,6 +92,10 @@ export async function apiServerFetch<T>(options: ApiOptions): Promise<ApiResult<
         return { success: true, data: Buffer.from(buffer).toString("base64") as T };
       }
 
+      if (response.status === 204) {
+        return { success: true, data: undefined as T };
+      }
+
       const responseData = await response.json();
 
       if (!response.ok) {
