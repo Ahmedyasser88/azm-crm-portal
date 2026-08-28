@@ -66,6 +66,12 @@ export default async function CustomerDetailPage({ params, searchParams }: Custo
             )}
           </div>
           <div className="flex gap-2">
+            <Link href={`/tickets?customerId=${id}`}>
+              <Button variant="outline">عرض التذاكر</Button>
+            </Link>
+            <Link href={`/tickets/new?customerId=${id}`}>
+              <Button variant="outline">فتح تذكرة</Button>
+            </Link>
             <Link href={`/customers/${id}/edit`}>
               <Button variant="outline">تعديل</Button>
             </Link>
