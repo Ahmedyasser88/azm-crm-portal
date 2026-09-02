@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { apiServerFetch } from "@/lib/api/fetch";
+import { quickReplyTemplateEndpoints } from "@/lib/api/quickReplyTemplate.api";
 import type { ConversationFormValues } from "@/lib/types/conversation";
 
 export type ConversationActionResult = { success: true } | { success: false; error: string };
@@ -48,4 +49,17 @@ export async function sendMessageAction(
   // Next.js to re-render this route's Server Components with the new message included.
   revalidatePath(`/conversations/${conversationId}`);
   return { success: true };
+}
+
+export type QuickReplyOption = { id: string; title: string; body: string };
+
+export async function listQuickReplyTemplatesAction(query: string): Promise<QuickReplyOption[]> {
+  const result = await quickReplyTemplateEndpoints.list({ search: query.trim() || undefined, pageSize: 10 });
+  if (!result.success) return [];
+
+  return result.data.items.map((template) => ({
+    id: template.id,
+    title: template.title,
+    body: template.body,
+  }));
 }

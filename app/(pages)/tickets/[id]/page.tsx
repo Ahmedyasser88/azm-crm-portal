@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { TicketHistorySection } from "@/components/tickets/TicketHistorySection";
+import { TicketCommentsSection } from "@/components/tickets/TicketCommentsSection";
 import { AssignTicketControl } from "@/components/tickets/AssignTicketControl";
 import { ChangeStatusControl } from "@/components/tickets/ChangeStatusControl";
 import { EscalateTicketControl } from "@/components/tickets/EscalateTicketControl";
@@ -13,12 +14,12 @@ import { TICKET_CATEGORY_LABELS, TICKET_PRIORITY_LABELS, TICKET_STATUS_LABELS } 
 
 type TicketDetailPageProps = {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ historyPage?: string }>;
+  searchParams: Promise<{ historyPage?: string; commentsPage?: string }>;
 };
 
 export default async function TicketDetailPage({ params, searchParams }: TicketDetailPageProps) {
   const { id } = await params;
-  const { historyPage } = await searchParams;
+  const { historyPage, commentsPage } = await searchParams;
 
   const result = await ticketEndpoints.getById(id);
 
@@ -34,6 +35,9 @@ export default async function TicketDetailPage({ params, searchParams }: TicketD
 
   const historyPageNumber = Number(historyPage) || 1;
   const historyResult = await ticketEndpoints.history.list(id, { pageNumber: historyPageNumber });
+
+  const commentsPageNumber = Number(commentsPage) || 1;
+  const commentsResult = await ticketEndpoints.comments.list(id, { pageNumber: commentsPageNumber });
 
   const currentUser = await getCurrentUser();
 
@@ -101,6 +105,14 @@ export default async function TicketDetailPage({ params, searchParams }: TicketD
         hasNextPage={historyResult.success ? historyResult.data.hasNextPage : false}
         hasPreviousPage={historyResult.success ? historyResult.data.hasPreviousPage : false}
         page={historyPageNumber}
+      />
+
+      <TicketCommentsSection
+        ticketId={id}
+        comments={commentsResult.success ? commentsResult.data.items : []}
+        hasNextPage={commentsResult.success ? commentsResult.data.hasNextPage : false}
+        hasPreviousPage={commentsResult.success ? commentsResult.data.hasPreviousPage : false}
+        page={commentsPageNumber}
       />
     </div>
   );

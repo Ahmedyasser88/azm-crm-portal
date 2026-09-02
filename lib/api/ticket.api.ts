@@ -1,6 +1,7 @@
 import { apiServerFetch } from "./fetch";
 import type { Ticket, TicketListItem, TicketCategory, TicketPriority, TicketStatus } from "../types/ticket";
 import type { TicketHistoryEntry } from "../types/ticketHistory";
+import type { TicketComment } from "../types/ticketComment";
 import type { PaginatedResult } from "../types/pagination";
 
 const TICKETS_URL = "/api/tickets";
@@ -38,6 +39,14 @@ export const ticketEndpoints = {
     list: (ticketId: string, params: { pageNumber?: number; pageSize?: number } = {}) =>
       apiServerFetch<PaginatedResult<TicketHistoryEntry>>({
         url: `${TICKETS_URL}/${ticketId}/history`,
+        params: { pageNumber: params.pageNumber ?? 1, pageSize: params.pageSize ?? 20 },
+        cache: "no-store",
+      }),
+  },
+  comments: {
+    list: (ticketId: string, params: { pageNumber?: number; pageSize?: number } = {}) =>
+      apiServerFetch<PaginatedResult<TicketComment>>({
+        url: `${TICKETS_URL}/${ticketId}/comments`,
         params: { pageNumber: params.pageNumber ?? 1, pageSize: params.pageSize ?? 20 },
         cache: "no-store",
       }),
