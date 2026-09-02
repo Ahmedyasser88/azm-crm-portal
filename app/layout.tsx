@@ -3,8 +3,8 @@ import "./globals.css";
 import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
-  title: "أزم - منصة إدارة علاقات العملاء",
-  description: "منصة أزم لإدارة علاقات العملاء والفرص البيعية",
+  title: "واصل - منصة إدارة علاقات العملاء",
+  description: "منصة واصل لإدارة علاقات العملاء والفرص البيعية",
 };
 
 export default function RootLayout({

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { login } from "./actions";
 
 export default function LoginPage() {
@@ -32,8 +33,8 @@ export default function LoginPage() {
         onSubmit={handleSubmit}
         className="w-full max-w-sm bg-white rounded-2xl shadow-sm border border-gray-300 p-8 space-y-6"
       >
-        <div className="text-center space-y-1">
-          <h1 className="text-2xl font-bold text-primary">أزم CRM</h1>
+        <div className="text-center space-y-3">
+          <Image src="/images/logo.svg" alt="واصل CRM" width={88} height={88} className="mx-auto" />
           <p className="text-sm text-text-secondary">تسجيل الدخول إلى حسابك</p>
         </div>
 
