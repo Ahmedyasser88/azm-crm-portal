@@ -11,6 +11,7 @@ import {
   Handshake,
   BarChart3,
   ShieldAlert,
+  BookOpen,
   type LucideIcon,
 } from "lucide-react";
 import { navItems } from "@/lib/constants/sidebar";
@@ -23,6 +24,7 @@ const ICONS: Record<string, LucideIcon> = {
   handshake: Handshake,
   "bar-chart-3": BarChart3,
   "shield-alert": ShieldAlert,
+  "book-open": BookOpen,
 };
 
 interface SidebarProps {
