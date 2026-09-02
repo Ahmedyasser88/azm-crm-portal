@@ -4,7 +4,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { assignTicketAction } from "@/app/(pages)/tickets/actions";
+import { AgentPicker } from "@/components/tickets/AgentPicker";
+import { assignTicketAction, searchAgentsAction } from "@/app/(pages)/tickets/actions";
 
 export type AssignTicketControlProps = {
   ticketId: string;
@@ -22,7 +23,7 @@ export function AssignTicketControl({
 }: AssignTicketControlProps) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [rawAgentId, setRawAgentId] = useState("");
+  const [pickerValue, setPickerValue] = useState("");
 
   async function handleAssign(userId: string | null) {
     setIsSubmitting(true);
@@ -34,7 +35,7 @@ export function AssignTicketControl({
       return;
     }
 
-    setRawAgentId("");
+    setPickerValue("");
     router.refresh();
   }
 
@@ -66,24 +67,15 @@ export function AssignTicketControl({
       </div>
 
       <div className="space-y-1.5">
-        <label htmlFor="raw-agent-id" className="text-sm font-medium text-text-default">
-          معرّف الموظف
-        </label>
-        <div className="flex gap-2">
-          <input
-            id="raw-agent-id"
-            value={rawAgentId}
-            onChange={(e) => setRawAgentId(e.target.value)}
-            className="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary/20"
-          />
-          <Button
-            variant="outline"
-            disabled={isSubmitting || !rawAgentId.trim()}
-            onClick={() => handleAssign(rawAgentId.trim())}
-          >
-            إسناد
-          </Button>
-        </div>
+        <label className="text-sm font-medium text-text-default">إسناد إلى موظف آخر</label>
+        <AgentPicker
+          value={pickerValue}
+          onSearch={searchAgentsAction}
+          onSelect={(agentId) => {
+            setPickerValue(agentId);
+            handleAssign(agentId);
+          }}
+        />
       </div>
     </div>
   );

@@ -17,6 +17,7 @@ export type DashboardTicket = {
   createdOn: string;
   isEscalated: boolean;
   escalatedOn: string | null;
+  resolutionDueOn: string | null;
   customer: CustomerSummary | null;
 };
 
