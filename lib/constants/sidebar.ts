@@ -12,4 +12,5 @@ export const navItems: NavItem[] = [
   { label: "الفرص البيعية", href: "/deals", icon: "handshake" },
   { label: "التقارير", href: "/reports", icon: "bar-chart-3" },
   { label: "الأتمتة وضمان الخدمة", href: "/automation", icon: "shield-alert" },
+  { label: "قاعدة المعرفة", href: "/knowledge-base", icon: "book-open" },
 ];
