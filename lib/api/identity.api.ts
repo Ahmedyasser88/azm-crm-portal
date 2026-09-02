@@ -1,10 +1,16 @@
 import { apiServerFetch } from "./fetch";
-import type { CurrentUser } from "../types/identity";
+import type { AgentSummary, CurrentUser } from "../types/identity";
 
 const IDENTITY_URL = "/api/identity";
 
 export const identityEndpoints = {
   me: () => apiServerFetch<CurrentUser>({ url: `${IDENTITY_URL}/me`, cache: "no-store" }),
+  searchAgents: (params: { search?: string; pageSize?: number }) =>
+    apiServerFetch<AgentSummary[]>({
+      url: `${IDENTITY_URL}/agents`,
+      params: { search: params.search, pageSize: params.pageSize ?? 10 },
+      cache: "no-store",
+    }),
 };
 
 /**

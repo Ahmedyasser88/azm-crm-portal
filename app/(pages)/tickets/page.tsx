@@ -123,11 +123,22 @@ export default async function TicketsPage({ searchParams }: TicketsPageProps) {
                   <td className="py-2 px-3">{TICKET_PRIORITY_LABELS[item.priority]}</td>
                   <td className="py-2 px-3">{TICKET_STATUS_LABELS[item.status]}</td>
                   <td className="py-2 px-3">
-                    {item.isEscalated && (
-                      <span className="inline-block rounded-full bg-destructive/10 text-destructive text-xs font-medium px-2 py-0.5">
-                        مُصعّدة
-                      </span>
-                    )}
+                    <div className="flex flex-wrap gap-1.5">
+                      {item.isEscalated && (
+                        <span className="inline-block rounded-full bg-destructive/10 text-destructive text-xs font-medium px-2 py-0.5">
+                          مُصعّدة
+                        </span>
+                      )}
+                      {!item.isEscalated &&
+                        item.resolutionDueOn &&
+                        new Date(item.resolutionDueOn) < new Date() &&
+                        item.status !== "Resolved" &&
+                        item.status !== "Closed" && (
+                          <span className="inline-block rounded-full bg-destructive/10 text-destructive text-xs font-medium px-2 py-0.5">
+                            متأخرة
+                          </span>
+                        )}
+                    </div>
                   </td>
                   <td className="py-2 px-3">{item.assignedToUserName ?? "—"}</td>
                   <td className="py-2 px-3">{formatDateTime(item.createdOn)}</td>

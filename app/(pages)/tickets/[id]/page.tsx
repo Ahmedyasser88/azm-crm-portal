@@ -11,6 +11,7 @@ import { ticketEndpoints } from "@/lib/api/ticket.api";
 import { customerEndpoints } from "@/lib/api/customer.api";
 import { getCurrentUser } from "@/lib/api/identity.api";
 import { TICKET_CATEGORY_LABELS, TICKET_PRIORITY_LABELS, TICKET_STATUS_LABELS } from "@/lib/constants/ticket";
+import { formatDateTime } from "@/lib/utils/date";
 
 type TicketDetailPageProps = {
   params: Promise<{ id: string }>;
@@ -63,6 +64,15 @@ export default async function TicketDetailPage({ params, searchParams }: TicketD
                   مُصعّدة
                 </span>
               )}
+              {!ticket.isEscalated &&
+                ticket.resolutionDueOn &&
+                new Date(ticket.resolutionDueOn) < new Date() &&
+                ticket.status !== "Resolved" &&
+                ticket.status !== "Closed" && (
+                  <span className="inline-block rounded-full bg-destructive/10 text-destructive text-xs font-medium px-2 py-0.5">
+                    متأخرة
+                  </span>
+                )}
             </div>
           </div>
           <Link href={`/tickets/${id}/edit`}>
@@ -98,6 +108,21 @@ export default async function TicketDetailPage({ params, searchParams }: TicketD
         isEscalated={ticket.isEscalated}
         escalatedOn={ticket.escalatedOn}
       />
+
+      {(ticket.responseDueOn || ticket.resolutionDueOn) && (
+        <div className="card space-y-2">
+          <h2 className="text-lg font-semibold text-text-default">اتفاقية مستوى الخدمة (SLA)</h2>
+          {ticket.responseDueOn && (
+            <p className="text-sm text-text-default">
+              الاستجابة المستحقة: {formatDateTime(ticket.responseDueOn)}
+              {ticket.respondedOn && ` — تم الرد في ${formatDateTime(ticket.respondedOn)}`}
+            </p>
+          )}
+          {ticket.resolutionDueOn && (
+            <p className="text-sm text-text-default">الحل المستحق: {formatDateTime(ticket.resolutionDueOn)}</p>
+          )}
+        </div>
+      )}
 
       <TicketHistorySection
         ticketId={id}

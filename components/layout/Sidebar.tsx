@@ -10,6 +10,7 @@ import {
   MessageCircle,
   Handshake,
   BarChart3,
+  ShieldAlert,
   type LucideIcon,
 } from "lucide-react";
 import { navItems } from "@/lib/constants/sidebar";
@@ -21,6 +22,7 @@ const ICONS: Record<string, LucideIcon> = {
   "message-circle": MessageCircle,
   handshake: Handshake,
   "bar-chart-3": BarChart3,
+  "shield-alert": ShieldAlert,
 };
 
 interface SidebarProps {

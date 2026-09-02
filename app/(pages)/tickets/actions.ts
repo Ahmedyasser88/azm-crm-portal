@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { apiServerFetch } from "@/lib/api/fetch";
 import { customerEndpoints } from "@/lib/api/customer.api";
+import { identityEndpoints } from "@/lib/api/identity.api";
 import type { TicketFormValues, TicketStatus } from "@/lib/types/ticket";
 
 export type TicketActionResult = { success: true } | { success: false; error: string };
@@ -144,5 +145,17 @@ export async function searchCustomersAction(query: string): Promise<CustomerSear
   return result.data.items.map((customer) => ({
     id: customer.id,
     label: customer.companyName ? `${customer.fullName} — ${customer.companyName}` : customer.fullName,
+  }));
+}
+
+export type AgentSearchResult = { id: string; label: string };
+
+export async function searchAgentsAction(query: string): Promise<AgentSearchResult[]> {
+  const result = await identityEndpoints.searchAgents({ search: query.trim() || undefined, pageSize: 10 });
+  if (!result.success) return [];
+
+  return result.data.map((agent) => ({
+    id: agent.id,
+    label: agent.email ? `${agent.fullName} — ${agent.email}` : agent.fullName,
   }));
 }

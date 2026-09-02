@@ -114,6 +114,15 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
                           مُصعّدة
                         </span>
                       )}
+                      {!ticket.isEscalated &&
+                        ticket.resolutionDueOn &&
+                        new Date(ticket.resolutionDueOn) < new Date() &&
+                        ticket.status !== "Resolved" &&
+                        ticket.status !== "Closed" && (
+                          <span className="inline-block rounded-full bg-destructive/10 text-destructive text-xs font-medium px-2 py-0.5">
+                            متأخرة
+                          </span>
+                        )}
                     </div>
                     {ticket.customer ? (
                       <Link
