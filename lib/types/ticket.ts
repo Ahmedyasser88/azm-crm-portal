@@ -16,6 +16,10 @@ export type Ticket = {
   assignedToUserName: string | null;
   isEscalated: boolean;
   escalatedOn: string | null;
+  slaPolicyId: string | null;
+  responseDueOn: string | null;
+  resolutionDueOn: string | null;
+  respondedOn: string | null;
 };
 
 export type TicketListItem = Pick<
@@ -31,6 +35,10 @@ export type TicketListItem = Pick<
   | "assignedToUserName"
   | "isEscalated"
   | "escalatedOn"
+  | "slaPolicyId"
+  | "responseDueOn"
+  | "resolutionDueOn"
+  | "respondedOn"
 >;
 
 export type TicketFormValues = {

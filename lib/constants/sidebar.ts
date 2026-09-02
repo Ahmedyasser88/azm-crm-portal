@@ -11,4 +11,5 @@ export const navItems: NavItem[] = [
   { label: "المحادثات", href: "/conversations", icon: "message-circle" },
   { label: "الفرص البيعية", href: "/deals", icon: "handshake" },
   { label: "التقارير", href: "/reports", icon: "bar-chart-3" },
+  { label: "الأتمتة وضمان الخدمة", href: "/automation", icon: "shield-alert" },
 ];

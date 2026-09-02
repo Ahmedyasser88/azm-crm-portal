@@ -6,3 +6,9 @@ export type CurrentUser = {
   mobileNumber: string;
   roles: string[];
 };
+
+export type AgentSummary = {
+  id: string;
+  fullName: string;
+  email: string | null;
+};
