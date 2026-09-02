@@ -114,6 +114,24 @@ export async function escalateTicketAction(
   return { success: true };
 }
 
+export async function addTicketCommentAction(
+  ticketId: string,
+  values: { content: string }
+): Promise<TicketActionResult | undefined> {
+  const result = await apiServerFetch<string>({
+    url: `/api/tickets/${ticketId}/comments`,
+    method: "POST",
+    body: { content: values.content.trim() },
+  });
+
+  if (!result.success) {
+    return { success: false, error: result.error };
+  }
+
+  revalidatePath(`/tickets/${ticketId}`);
+  return { success: true };
+}
+
 export type CustomerSearchResult = { id: string; label: string };
 
 export async function searchCustomersAction(query: string): Promise<CustomerSearchResult[]> {
