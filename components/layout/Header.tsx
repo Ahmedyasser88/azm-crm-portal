@@ -19,7 +19,7 @@ export default function Header({
   onToggle: () => void;
   user: CurrentUser | null;
 }) {
-  const userDisplayName = user?.fullName || user?.username || "مستخدم أزم";
+  const userDisplayName = user?.fullName || user?.username || "مستخدم واصل";
 
   return (
     <header className="bg-white h-16 flex items-center justify-between px-4 lg:px-16 sticky top-0 z-30 shadow-sm">

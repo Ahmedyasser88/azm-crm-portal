@@ -43,7 +43,7 @@ export default function Sidebar({ collapsed }: SidebarProps) {
     >
       {!collapsed && (
         <div className="flex items-center justify-center p-2 bg-surface h-[67.25px] border-b border-white/10">
-          <Image src="/images/logo.svg" alt="Azm CRM" width={160} height={40} />
+          <Image src="/images/logo.svg" alt="Wasel CRM" width={52} height={52} />
         </div>
       )}
 

@@ -1,6 +1,6 @@
-# Azm CRM — Frontend Portal
+# Wasel CRM — Frontend Portal
 
-A Next.js (App Router) + TypeScript frontend for **Azm CRM**. This repository is currently an
+A Next.js (App Router) + TypeScript frontend for **Wasel CRM**. This repository is currently an
 empty scaffold: architecture, tooling, and conventions are in place (Tailwind v4, shadcn/radix-ui
 components, jotai state, a server-side `apiServerFetch` API pattern, cookie-based auth middleware,
 RTL/Arabic-first layout, sonner toasts) but no CRM business screens have been built yet.
