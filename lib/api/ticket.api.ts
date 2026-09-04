@@ -2,6 +2,7 @@ import { apiServerFetch } from "./fetch";
 import type { Ticket, TicketListItem, TicketCategory, TicketPriority, TicketStatus } from "../types/ticket";
 import type { TicketHistoryEntry } from "../types/ticketHistory";
 import type { TicketComment } from "../types/ticketComment";
+import type { KnowledgeArticlePublicListItem } from "../types/knowledgeArticle";
 import type { PaginatedResult } from "../types/pagination";
 
 const TICKETS_URL = "/api/tickets";
@@ -51,4 +52,10 @@ export const ticketEndpoints = {
         cache: "no-store",
       }),
   },
+  suggestedArticles: (ticketId: string, maxResults = 5) =>
+    apiServerFetch<KnowledgeArticlePublicListItem[]>({
+      url: `${TICKETS_URL}/${ticketId}/suggested-articles`,
+      params: { maxResults },
+      cache: "no-store",
+    }),
 };

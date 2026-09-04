@@ -6,6 +6,9 @@ import { TicketCommentsSection } from "@/components/tickets/TicketCommentsSectio
 import { AssignTicketControl } from "@/components/tickets/AssignTicketControl";
 import { ChangeStatusControl } from "@/components/tickets/ChangeStatusControl";
 import { EscalateTicketControl } from "@/components/tickets/EscalateTicketControl";
+import { TicketAiSummaryPanel } from "@/components/tickets/TicketAiSummaryPanel";
+import { TicketSuggestedReplyPanel } from "@/components/tickets/TicketSuggestedReplyPanel";
+import { TicketSuggestedArticlesPanel } from "@/components/tickets/TicketSuggestedArticlesPanel";
 import { SetBreadcrumbLabel } from "@/components/customers/SetBreadcrumbLabel";
 import { ticketEndpoints } from "@/lib/api/ticket.api";
 import { customerEndpoints } from "@/lib/api/customer.api";
@@ -39,6 +42,8 @@ export default async function TicketDetailPage({ params, searchParams }: TicketD
 
   const commentsPageNumber = Number(commentsPage) || 1;
   const commentsResult = await ticketEndpoints.comments.list(id, { pageNumber: commentsPageNumber });
+
+  const suggestedArticlesResult = await ticketEndpoints.suggestedArticles(id);
 
   const currentUser = await getCurrentUser();
 
@@ -107,6 +112,16 @@ export default async function TicketDetailPage({ params, searchParams }: TicketD
         ticketId={id}
         isEscalated={ticket.isEscalated}
         escalatedOn={ticket.escalatedOn}
+      />
+
+      <TicketAiSummaryPanel
+        ticketId={id}
+        aiSummary={ticket.aiSummary}
+        aiSummaryGeneratedOn={ticket.aiSummaryGeneratedOn}
+      />
+      <TicketSuggestedReplyPanel ticketId={id} />
+      <TicketSuggestedArticlesPanel
+        articles={suggestedArticlesResult.success ? suggestedArticlesResult.data : []}
       />
 
       {(ticket.responseDueOn || ticket.resolutionDueOn) && (

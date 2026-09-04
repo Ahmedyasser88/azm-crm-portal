@@ -28,7 +28,7 @@ export default async function NewTicketPage({ searchParams }: NewTicketPageProps
           customerId: customerId ?? "",
           title: "",
           description: "",
-          category: "General",
+          category: "Auto",
           priority: "Medium",
         }}
         initialCustomerLabel={initialCustomerLabel}

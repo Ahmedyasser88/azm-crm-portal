@@ -19,7 +19,7 @@ export async function createTicketAction(
       customerId: values.customerId,
       title: values.title.trim(),
       description: values.description.trim() || null,
-      category: values.category,
+      category: values.category === "Auto" ? null : values.category,
       priority: values.priority,
     },
   });
@@ -113,6 +113,35 @@ export async function escalateTicketAction(
   revalidatePath(`/tickets/${ticketId}`);
   revalidatePath("/tickets");
   return { success: true };
+}
+
+export async function generateTicketAiSummaryAction(ticketId: string): Promise<TicketActionResult> {
+  const result = await apiServerFetch<void>({
+    url: `/api/tickets/${ticketId}/ai-summary`,
+    method: "POST",
+  });
+
+  if (!result.success) {
+    return { success: false, error: result.error };
+  }
+
+  revalidatePath(`/tickets/${ticketId}`);
+  revalidatePath("/tickets");
+  return { success: true };
+}
+
+export type SuggestedReplyResult = { success: true; reply: string } | { success: false; error: string };
+
+export async function getSuggestedTicketReplyAction(ticketId: string): Promise<SuggestedReplyResult> {
+  const result = await apiServerFetch<{ suggestedReply: string }>({
+    url: `/api/tickets/${ticketId}/suggested-reply`,
+  });
+
+  if (!result.success) {
+    return { success: false, error: result.error };
+  }
+
+  return { success: true, reply: result.data.suggestedReply };
 }
 
 export async function addTicketCommentAction(
