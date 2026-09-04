@@ -20,6 +20,8 @@ export type Ticket = {
   responseDueOn: string | null;
   resolutionDueOn: string | null;
   respondedOn: string | null;
+  aiSummary: string | null;
+  aiSummaryGeneratedOn: string | null;
 };
 
 export type TicketListItem = Pick<
@@ -45,6 +47,9 @@ export type TicketFormValues = {
   customerId: string;
   title: string;
   description: string;
-  category: TicketCategory;
+  // "Auto" is a frontend-only sentinel (never sent as-is to the backend) meaning "let the AI
+  // categorizer decide" — see createTicketAction, which omits `category` from the request body
+  // when this value is chosen.
+  category: TicketCategory | "Auto";
   priority: TicketPriority;
 };

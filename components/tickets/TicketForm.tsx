@@ -98,6 +98,7 @@ export function TicketForm({ mode, initialValues, initialCustomerLabel, onSubmit
             onChange={(e) => handleChange("category", e.target.value as TicketFormValues["category"])}
             className={inputClassName}
           >
+            {mode === "create" && <option value="Auto">تصنيف تلقائي (الذكاء الاصطناعي)</option>}
             {TICKET_CATEGORIES.map((category) => (
               <option key={category} value={category}>
                 {TICKET_CATEGORY_LABELS[category]}
